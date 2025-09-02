@@ -38,9 +38,9 @@
         
         .header-container {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-between; /* Keep logo left & menu right */
             align-items: center;
-            padding: 15px 0;
+            padding: 15px 20px;
         }
         
         .logo {
@@ -52,6 +52,7 @@
             color: #0056b3;
             font-size: 24px;
             font-weight: 700;
+            white-space: nowrap; /* Prevent logo text from wrapping */
         }
         
         .logo span {
@@ -85,6 +86,7 @@
             border: none;
             cursor: pointer;
             color: #0056b3;
+            margin-left: auto; /* Push hamburger to far right */
         }
         
         /* Hero Section */
@@ -439,7 +441,6 @@
                 <ul id="menu">
                     <li><a href="#home">Home</a></li>
                     <li><a href="#services">Services</a></li>
-                    <!-- <li><a href="#tracking">Tracking</a></li> -->
                     <li><a href="#about">About Us</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
@@ -490,19 +491,11 @@
                         <h3>Ground Transportation</h3>
                         <p>Reliable trucking and rail services for domestic and cross-border shipments with flexible options.</p>
                     </div>
-                <!-- </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-warehouse"></i>
-                    </div>
-                    <div class="service-content">
-                        <h3>Warehousing</h3>
-                        <p>Secure storage solutions with inventory management and distribution services to streamline your supply chain.</p>
-                    </div>
-                </div> -->
+                </div>
             </div>
         </div>
     </section>
+
     <!-- About Section -->
     <section class="about" id="about">
         <div class="container">
@@ -535,10 +528,6 @@
                 <div class="contact-info">
                     <h3>Get In Touch</h3>
                     <div class="contact-detail">
-                        <!-- <i class="fas fa-map-marker-alt"></i> -->
-                        
-                    </div>
-                    <div class="contact-detail">
                         <i class="fas fa-phone"></i>
                         <div>
                             <h4>Phone</h4>
@@ -555,7 +544,7 @@
                 </div>
                 <div class="contact-form">
                     <h3>Send Us a Message</h3>
-                    <form>
+                    <form id="contactForm">
                         <div class="form-group">
                             <label for="name">Your Name</label>
                             <input type="text" id="name" required>
@@ -588,7 +577,6 @@
                     <ul>
                         <li><a href="#home">Home</a></li>
                         <li><a href="#services">Services</a></li>
-                        <!-- <li><a href="#tracking">Tracking</a></li> -->
                         <li><a href="#about">About Us</a></li>
                         <li><a href="#contact">Contact</a></li>
                     </ul>
@@ -599,18 +587,8 @@
                         <li><a href="#">Sea Freight</a></li>
                         <li><a href="#">Air Freight</a></li>
                         <li><a href="#">Ground Transportation</a></li>
-                        <!-- <li><a href="#">Warehousing</a></li> -->
                         <li><a href="#">Supply Chain Solutions</a></li>
                     </ul>
-                </div>
-                <div class="footer-column">
-                    <!-- <h3>Connect With Us</h3>
-                    <ul>
-                        <li><a href="#"><i class="fab fa-facebook-f"></i> Facebook</a></li>
-                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
-                        <li><a href="#"><i class="fab fa-linkedin-in"></i> LinkedIn</a></li>
-                        <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
-                    </ul> -->
                 </div>
             </div>
             <div class="footer-bottom">
@@ -618,32 +596,45 @@
             </div>
         </div>
     </footer>
-
     <script>
         // Mobile menu toggle
-        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
-            document.getElementById('menu').classList.toggle('show');
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const menu = document.getElementById('menu');
+
+        mobileMenuBtn.addEventListener('click', function () {
+            menu.classList.toggle('show');
         });
-        
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 70,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Close mobile menu if open
-                    document.getElementById('menu').classList.remove('show');
-                }
+
+        // Close menu when clicking a link (optional, but cleaner for mobile UX)
+        const menuLinks = document.querySelectorAll('#menu a');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.remove('show');
             });
+        });
+
+        // Contact form mailto functionality
+        document.getElementById("contactForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            // Collect form values
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const message = document.getElementById("message").value;
+
+            // Build mailto link
+            const subject = encodeURIComponent("New Message from " + name);
+            const body = encodeURIComponent(
+                "Name: " + name + "\n" +
+                "Email: " + email + "\n\n" +
+                "Message:\n" + message
+            );
+
+            // Replace with your business email
+            const mailto = `mailto:emmanuel@justships.org?subject=${subject}&body=${body}`;
+
+            // Open user's email client
+            window.location.href = mailto;
         });
     </script>
 </body>
